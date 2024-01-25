@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { IUser, User } from '../entities/user.entity';
 import { Auth } from '../entities/auth.entity';
+import { Action } from '../entities/actions.entity';
 
 @Injectable()
 export class UsersService {
@@ -16,6 +17,9 @@ export class UsersService {
 
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+
+    @InjectRepository(Action)
+    private actionsRepository: Repository<Action>,
   ) {}
 
   async createUser(fio: string, password: string, login): Promise<IUser> {
@@ -61,10 +65,14 @@ export class UsersService {
     const auth = await this.authRepository.findOneBy({
       userId: user.id,
     });
-
     if (auth) {
       await this.authRepository.remove(auth);
     }
+
+    await this.actionsRepository.delete({
+      userId: user.id,
+    });
+
     return (await this.usersRepository.remove(user)).transform();
   }
 

@@ -10,6 +10,8 @@ import { Auth } from '../entities/auth.entity';
 import { JwtMiddleware } from '../middleware/jwt.middleware';
 import { UsersController } from '../controllers/users.controller';
 import { Action } from '../entities/actions.entity';
+import { WeatherModule } from './weather.module';
+import { WeatherController } from '../controllers/weather.controller';
 
 const envs = process.env;
 
@@ -30,6 +32,7 @@ const envs = process.env;
     }),
     AuthModule,
     UsersModule,
+    WeatherModule,
     TypeOrmModule.forFeature([User, Auth, Action]),
   ],
   controllers: [AppController],
@@ -37,6 +40,6 @@ const envs = process.env;
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(JwtMiddleware).forRoutes(UsersController);
+    consumer.apply(JwtMiddleware).forRoutes(UsersController, WeatherController);
   }
 }
