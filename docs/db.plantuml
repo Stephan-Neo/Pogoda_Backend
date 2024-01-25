@@ -1,0 +1,49 @@
+@startuml
+
+' hide "E" circle
+hide circle
+
+' straight arrows
+' skinparam linetype ortho
+
+entity Auth {
+  id: string
+  --
+
+  user_id: User
+  accessToken: string
+  accessTokenExpires: string
+
+  createdAt: date
+  updatedAt: date
+}
+
+
+entity User {
+  id: string
+  --
+
+  email: string
+  login: string
+  password: string
+
+  createdAt: date
+  updatedAt: date
+}
+
+entity Actions {
+  id: string
+  --
+
+  user_id: User
+  actionTime: string
+  requestResult: number
+  tempC: string
+
+  createdAt: date
+  updatedAt: date
+}
+
+Auth }o--|| User
+Actions }o--|| User
+@enduml
